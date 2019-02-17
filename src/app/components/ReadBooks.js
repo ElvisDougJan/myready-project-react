@@ -1,33 +1,30 @@
 import React, { Component } from 'react'
-import { getAll } from '../utils/BooksAPI'
-import './../style/App.css'
+import { getAll } from './../utils/BooksAPI'
 
-class ListBooksReading extends Component {
+class ReadBooks extends Component {
   state = {
-    booksReading: []
+    booksRead: []
   }
 
-  async consultingListBooks() {
+  async consultingReadBooks() {
     await getAll()
-      .then(list => {
-        this.setState(() => ({ booksReading: list.filter(book => book.shelf === 'currentlyReading') }))
-      })
-      .catch(err => console.warn(`Error on fetching list of books from API. ERROR: ${err}`))
+      .then(list => this.setState({ booksRead: list.filter(book => book.shelf === 'read') }))
+      .catch(err => console.warn(`Error on consulting list of read books. ERROR: ${err}`))
   }
 
   async componentDidMount() {
-    await this.consultingListBooks()
+    await this.consultingReadBooks()
   }
 
   render() {
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
-          {this.state.booksReading.map(book => (
-            <li key={book.id}>
+          {this.state.booksRead.map(book => (
+            <li key={ book.id }>
               <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+                  <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                   <div className="book-shelf-changer">
                     <select>
                       <option value="move" disabled>Move to...</option>
@@ -38,8 +35,8 @@ class ListBooksReading extends Component {
                     </select>
                   </div>
                 </div>
-                <div className="book-title">To Kill a Mockingbird</div>
-                <div className="book-authors">Harper Lee</div>
+                <div className="book-title">{ book.title }</div>
+                <div className="book-authors">{ book.authors.map(author => (<p>{ author }</p>))}</div>
               </div>
             </li>
           ))}
@@ -49,4 +46,4 @@ class ListBooksReading extends Component {
   }
 }
 
-export default ListBooksReading
+export default ReadBooks

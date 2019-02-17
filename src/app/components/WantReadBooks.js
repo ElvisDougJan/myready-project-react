@@ -3,12 +3,12 @@ import { getAll } from './../utils/BooksAPI'
 
 class WantToRead extends Component {
   state = {
-    listBooks: []
+    booksWant: []
   }
 
   async consultingListBooks() {
     await getAll()
-      .then(list => this.setState(() => ({ listBooks: list.filter(book => book.shelf === 'wantToRead') })))
+      .then(list => this.setState(() => ({ booksWant: list.filter(book => book.shelf === 'wantToRead') })))
       .catch(err => console.warn(`Error on fetching list books from API. ERROR: ${err}`))
   }
 
@@ -20,7 +20,7 @@ class WantToRead extends Component {
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
-          {this.state.listBooks.map(book => (
+          {this.state.booksWant.map(book => (
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
