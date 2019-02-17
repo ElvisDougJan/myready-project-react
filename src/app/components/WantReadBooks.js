@@ -35,8 +35,8 @@ class WantToRead extends Component {
                     </select>
                   </div>
                 </div>
-                <div className="book-title">1776</div>
-                <div className="book-authors">David McCullough</div>
+                <div className="book-title">{ book.title }</div>
+                <div className="book-authors">{ book.authors.map(author => (<p>{ author }</p>))}</div>
               </div>
             </li>
           ))}
