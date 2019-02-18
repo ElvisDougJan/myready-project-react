@@ -1,4 +1,5 @@
 import React from 'react'
+import { Router } from 'react-router-dom'
 import './style/App.css'
 import ListBooksReading from './components/ListBooksReading'
 import WantReadBooks from './components/WantReadBooks'
@@ -13,35 +14,34 @@ class BooksApp extends React.Component {
 
   render() {
     return (
-      <div className="app">
-        {this.state.showSearchPage ? (
+      <div>
+        {/* <Router exac path='/search' render={() => (
           <SearchBar />
-        ) : (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
+        )} /> */}
+        <div className="list-books">
+          <div className="list-books-title">
+            <h1>MyReads</h1>
+          </div>
+          <div className="list-books-content">
+            <div>
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Currently Reading</h2>
+                <ListBooksReading />
               </div>
-              <div className="list-books-content">
-                <div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Currently Reading</h2>
-                    <ListBooksReading />
-                  </div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Want to Read</h2>
-                    <WantReadBooks />
-                  </div>
-                  <div className="bookshelf">
-                    <h2 className="bookshelf-title">Read</h2>
-                    <ReadBooks />
-                  </div>
-                </div>
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Want to Read</h2>
+                <WantReadBooks />
               </div>
-              <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">Read</h2>
+                <ReadBooks />
               </div>
             </div>
-          )}
+          </div>
+          <div className="open-search">
+            <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+          </div>
+        </div>
       </div>
     )
   }
