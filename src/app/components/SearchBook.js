@@ -10,15 +10,15 @@ class SearchBooks extends Component {
 
   async componentDidMount() {
     await getAll().then(list => this.setState(() => ({ listBooks: list })))
-    console.log(this.state.listBooks)
   }
 
   render() {
-    const { query, listBooks } = this.state
+    const { listBooks } = this.state
     const filteredTitle = listBooks.filter(book =>
-      book.title.toLowerCase().includes(query.toLowerCase()))
+      book.title.toLowerCase().includes(this.props.queryConsulting.toLowerCase()))
     return (
       <div className="search-books-results">
+        {this.props.onTeste}
         <ol className="books-grid">
           {filteredTitle.map(book => (
             <li key={book.id}>
