@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import SearchBooks from './SearchBook'
 import { Route, Link } from 'react-router-dom'
 
-class SearchBar extends Component {
+export default class SearchBar extends Component {
 
   state = {
     query: ''
@@ -37,5 +37,3 @@ class SearchBar extends Component {
     )
   }
 }
-
-export default SearchBar

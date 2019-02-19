@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { getAll } from './../utils/BooksAPI'
 
-class SearchBooks extends Component {
+export default class SearchBooks extends Component {
 
   state = {
     query: '',
@@ -51,5 +51,3 @@ class SearchBooks extends Component {
     )
   }
 }
-
-export default SearchBooks

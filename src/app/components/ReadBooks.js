@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { getAll } from './../utils/BooksAPI'
 
-class ReadBooks extends Component {
+export default class ReadBooks extends Component {
   state = {
     booksRead: []
   }
@@ -51,5 +51,3 @@ class ReadBooks extends Component {
     )
   }
 }
-
-export default ReadBooks

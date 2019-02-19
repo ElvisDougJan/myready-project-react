@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { getAll } from '../utils/BooksAPI'
 import './../style/App.css'
 
-class ListBooksReading extends Component {
+export default class ListBooksReading extends Component {
   state = {
     booksReading: []
   }
@@ -54,5 +54,3 @@ class ListBooksReading extends Component {
     )
   }
 }
-
-export default ListBooksReading

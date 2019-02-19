@@ -3,7 +3,7 @@ import WantReadBooks from './WantReadBooks'
 import ReadBooks from './ReadBooks'
 import ListBooksReading from './ListBooksReading'
 
-class Home extends Component {
+export default class Home extends Component {
 
   render() {
     return (
@@ -32,5 +32,3 @@ class Home extends Component {
   }
 
 }
-
-export default Home
