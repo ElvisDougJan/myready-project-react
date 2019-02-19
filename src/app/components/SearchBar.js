@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SearchBooks from './SearchBook'
+import { Route, Link } from 'react-router-dom'
 
 class SearchBar extends Component {
 
@@ -17,7 +18,9 @@ class SearchBar extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
+          <Link to='/'>
+            <button className="close-search">Close</button>
+          </Link>
           <div className="search-books-input-wrapper">
             <input
               type="text"
@@ -27,7 +30,9 @@ class SearchBar extends Component {
             />
           </div>
         </div>
-        <SearchBooks queryConsulting={this.state.query} />
+        <Route exac path='/search' render={() => (
+          <SearchBooks queryConsulting={this.state.query} />
+        )} />
       </div>
     )
   }
