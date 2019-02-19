@@ -4,8 +4,7 @@ import './style/App.css'
 import SearchBar from './components/SearchBar'
 import Home from './components/Home'
 
-
-const App = () => 
+export const App = () => 
   <div>
     <Route exact path='/' component={Home} />
     <Route path='/search' component={SearchBar} />
@@ -13,5 +12,3 @@ const App = () =>
       <button></button>
     </Link>
   </div>
-
-export default App
