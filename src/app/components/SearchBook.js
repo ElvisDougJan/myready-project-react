@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
 import { getAll } from './../utils/BooksAPI'
 
-export default class WantToRead extends Component {
-  state = {
-    booksWant: []
-  }
+export default class SearchBooks extends Component {
 
-  async consultingListBooks() {
-    await getAll()
-      .then(list => this.setState(() => ({ booksWant: list.filter(book => book.shelf === 'wantToRead') })))
-      .catch(err => console.warn(`Error on fetching list books from API. ERROR: ${err}`))
+  state = {
+    query: '',
+    listBooks: []
   }
 
   async componentDidMount() {
-    this.consultingListBooks()
+    await getAll().then(list => this.setState(() => ({ listBooks: list })))
   }
 
   render() {
+    const { listBooks } = this.state
+    const filteredTitle = listBooks.filter(book =>
+      book.title.toLowerCase().includes(this.props.queryConsulting.toLowerCase()))
     return (
-      <div className="bookshelf-books">
+      <div className="search-books-results">
+        {this.props.onTeste}
         <ol className="books-grid">
-          {this.state.booksWant.map(book => (
+          {filteredTitle.map(book => (
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
