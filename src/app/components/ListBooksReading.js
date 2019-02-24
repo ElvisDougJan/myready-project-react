@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAll } from '../utils/BooksAPI'
+import { getAll, update } from '../utils/BooksAPI'
 import './../style/App.css'
 
 export default class ListBooksReading extends Component {
@@ -10,6 +10,7 @@ export default class ListBooksReading extends Component {
   async consultingListBooks() {
     await getAll()
       .then(list => {
+        list.forEach(book => console.log(book.shelf))
         this.setState(() => ({ booksReading: list.filter(book => book.shelf === 'currentlyReading') }))
       })
       .catch(err => console.warn(`Error on fetching list of books from API. ERROR: ${err}`))
@@ -17,6 +18,11 @@ export default class ListBooksReading extends Component {
 
   async componentDidMount() {
     await this.consultingListBooks()
+  }
+
+  updateBook = (event, book) => {
+    update(book, { shelf: event.target.value })
+      .then(res => console.log(res))
   }
 
   render() {
@@ -29,7 +35,7 @@ export default class ListBooksReading extends Component {
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                   <div className="book-shelf-changer">
-                    <select>
+                    <select onClick={event => this.updateBook(event, book)}>
                       <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>
