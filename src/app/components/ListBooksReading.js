@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAll, update } from '../utils/BooksAPI'
+import { update } from '../utils/BooksAPI'
 import './../style/App.css'
 
 export default class ListBooksReading extends Component {
@@ -7,18 +7,7 @@ export default class ListBooksReading extends Component {
     booksReading: []
   }
 
-  async consultingListBooks() {
-    await getAll()
-      .then(list => {
-        list.forEach(book => console.log(book.shelf))
-        this.setState(() => ({ booksReading: list.filter(book => book.shelf === 'currentlyReading') }))
-      })
-      .catch(err => console.warn(`Error on fetching list of books from API. ERROR: ${err}`))
-  }
-
-  async componentDidMount() {
-    await this.consultingListBooks()
-  }
+  componentDidMount = () => this.setState(() => ({ booksReading: this.props.booksList }))
 
   updateBook = (event, book) => {
     update(book, { shelf: event.target.value })
