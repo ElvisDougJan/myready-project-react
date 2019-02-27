@@ -4,42 +4,51 @@ import ReadBooks from './ReadBooks'
 import ListBooksReading from './ListBooksReading'
 import { getAll } from './../utils/BooksAPI'
 
-let listCurrentlyRead = []
-let listRead = []
-let listWantRead = []
+export class Home extends React.Component {
 
-async function consultingListBooks() {
-  await getAll()
-  .then(async list => {
-    listCurrentlyRead = await list.filter(book => book.shelf === 'currentlyReading')
-    listRead = await list.filter(book => book.shelf === 'wantToRead')
-    listWantRead = await list.filter(book => book.shelf === 'read')
-    console.log(listRead)
-  })
-  .catch(err => console.warn(`Error on fetching list of books from API. ERROR: ${err}`))
-}
+  constructor() {
+    super()
+  }
 
-consultingListBooks()
+  state = {
+    listCurrentlyRead: [],
+    listWantRead: [],
+    listRead: []
+  }
 
-export const Home = () =>
-  <div className="list-books">
-    <div className="list-books-title">
-      <h1>MyReads</h1>
-    </div>
-    <div className="list-books-content">
-      <div>
-        <div className="bookshelf">
-          <h2 className="bookshelf-title">Currently Reading</h2>
-          <ListBooksReading booksList={listCurrentlyRead} />
+  async componentDidMount() {
+    await getAll().then(list => {
+      this.setState(() => ({
+        listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
+        listWantRead: list.filter(book => book.shelf === 'wantToRead'),
+        listRead: list.filter(book => book.shelf === 'read')
+      }))
+    })
+  }
+
+  render() {
+    return (
+      <div className="list-books">
+        <div className="list-books-title">
+          <h1>MyReads</h1>
         </div>
-        <div className="bookshelf">
-          <h2 className="bookshelf-title">Want to Read</h2>
-          <WantReadBooks booksList={listWantRead} />
-        </div>
-        <div className="bookshelf">
-          <h2 className="bookshelf-title">Read</h2>
-          <ReadBooks booksList={listRead} />
+        <div className="list-books-content">
+          <div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">Currently Reading</h2>
+              <ListBooksReading booksList={this.state.listCurrentlyRead} />
+            </div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">Want to Read</h2>
+              <WantReadBooks booksList={this.state.listWantRead} />
+            </div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">Read</h2>
+              <ReadBooks booksList={this.state.listRead} />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    )
+  }
+}

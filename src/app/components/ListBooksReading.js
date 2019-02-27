@@ -3,11 +3,12 @@ import { update } from '../utils/BooksAPI'
 import './../style/App.css'
 
 export default class ListBooksReading extends Component {
+
   state = {
     booksReading: []
   }
 
-  componentDidMount = () => this.setState(() => ({ booksReading: this.props.booksList }))
+  componentWillReceiveProps = async newProps => await this.setState({ booksReading: newProps.booksList })
 
   updateBook = (event, book) => {
     update(book, { shelf: event.target.value })

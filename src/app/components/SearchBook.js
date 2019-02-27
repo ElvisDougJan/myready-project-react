@@ -8,9 +8,7 @@ export default class SearchBooks extends Component {
     listBooks: []
   }
 
-  async componentDidMount() {
-    await getAll().then(list => this.setState(() => ({ listBooks: list })))
-  }
+  componentDidMount = async () => await getAll().then(list => this.setState(() => ({ listBooks: list })))
 
   render() {
     const { listBooks } = this.state

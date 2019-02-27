@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 
 export default class WantToRead extends Component {
+
   state = {
     booksWant: []
   }
 
-  componentDidMount = () => this.setState(() => ({ booksWant: this.props.booksList }))
+  componentWillReceiveProps = async newProps => await this.setState({ booksWant: newProps.booksList })
 
   render() {
     return (

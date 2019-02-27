@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 
 export default class ReadBooks extends Component {
+
   state = {
     booksRead: []
   }
 
-  componentDidMount = () => this.setState(() => ({ booksRead: this.props.booksList }))
+  componentWillReceiveProps = async newProps => await this.setState({ booksRead: newProps.booksList })
 
   render() {
-    console.log(this.state.booksRead)
     return (
       <div className="bookshelf-books">
         <ol className="books-grid">
