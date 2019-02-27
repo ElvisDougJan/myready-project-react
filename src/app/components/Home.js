@@ -6,9 +6,9 @@ import { getAll } from './../utils/BooksAPI'
 
 export class Home extends React.Component {
 
-  constructor() {
-    super()
-  }
+  // constructor() {
+  //   super()
+  // }
 
   state = {
     listCurrentlyRead: [],

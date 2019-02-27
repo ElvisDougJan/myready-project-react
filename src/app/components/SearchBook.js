@@ -1,24 +1,28 @@
 import React, { Component } from 'react'
-import { getAll } from './../utils/BooksAPI'
+import { search } from './../utils/BooksAPI'
 
 export default class SearchBooks extends Component {
-
   state = {
-    query: '',
     listBooks: []
   }
 
-  componentDidMount = async () => await getAll().then(list => this.setState(() => ({ listBooks: list })))
-
+  componentWillReceiveProps = async newProps => {
+    await search(newProps.queryConsulting)
+      .then(res => {
+        if (!res.error) {
+          this.setState(() => ({ listBooks: res }))
+        } else {
+          console.log('error')
+        }
+        // console.log(this.state.listBooks.map(book => book.authors.map(authos => console.log('Autor', authos))))
+      })
+      .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+  }
   render() {
-    const { listBooks } = this.state
-    const filteredTitle = listBooks.filter(book =>
-      book.title.toLowerCase().includes(this.props.queryConsulting.toLowerCase()))
     return (
       <div className="search-books-results">
-        {this.props.onTeste}
         <ol className="books-grid">
-          {filteredTitle.map(book => (
+          {this.state.listBooks.map(book => (
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
