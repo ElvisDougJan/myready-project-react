@@ -7,16 +7,17 @@ export default class SearchBooks extends Component {
   }
 
   componentWillReceiveProps = async newProps => {
-    await search(newProps.queryConsulting)
-      .then(res => {
-        if (!res.error) {
-          this.setState(() => ({ listBooks: res }))
-        } else {
-          console.log('error')
-        }
-        // console.log(this.state.listBooks.map(book => book.authors.map(authos => console.log('Autor', authos))))
-      })
-      .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+    if (newProps.queryConsulting !== '') {
+      await search(newProps.queryConsulting)
+        .then(res => {
+          if (!res.error) {
+            this.setState({ listBooks: res })
+          }
+        })
+        .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+    } else {
+      this.setState(() => ({ listBooks: [] }))
+    }
   }
   render() {
     return (
