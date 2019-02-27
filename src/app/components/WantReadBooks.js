@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
-import { getAll } from './../utils/BooksAPI'
 
 export default class WantToRead extends Component {
+
   state = {
     booksWant: []
   }
 
-  async consultingListBooks() {
-    await getAll()
-      .then(list => this.setState(() => ({ booksWant: list.filter(book => book.shelf === 'wantToRead') })))
-      .catch(err => console.warn(`Error on fetching list books from API. ERROR: ${err}`))
-  }
-
-  async componentDidMount() {
-    this.consultingListBooks()
-  }
+  componentWillReceiveProps = async newProps => await this.setState({ booksWant: newProps.booksList })
 
   render() {
     return (

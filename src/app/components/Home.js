@@ -1,9 +1,30 @@
-import React, { Component } from 'react'
+import React from 'react'
 import WantReadBooks from './WantReadBooks'
 import ReadBooks from './ReadBooks'
 import ListBooksReading from './ListBooksReading'
+import { getAll } from './../utils/BooksAPI'
 
-export default class Home extends Component {
+export class Home extends React.Component {
+
+  constructor() {
+    super()
+  }
+
+  state = {
+    listCurrentlyRead: [],
+    listWantRead: [],
+    listRead: []
+  }
+
+  async componentDidMount() {
+    await getAll().then(list => {
+      this.setState(() => ({
+        listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
+        listWantRead: list.filter(book => book.shelf === 'wantToRead'),
+        listRead: list.filter(book => book.shelf === 'read')
+      }))
+    })
+  }
 
   render() {
     return (
@@ -15,20 +36,19 @@ export default class Home extends Component {
           <div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
-              <ListBooksReading />
+              <ListBooksReading booksList={this.state.listCurrentlyRead} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
-              <WantReadBooks />
+              <WantReadBooks booksList={this.state.listWantRead} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
-              <ReadBooks />
+              <ReadBooks booksList={this.state.listRead} />
             </div>
           </div>
         </div>
       </div>
     )
   }
-
 }
