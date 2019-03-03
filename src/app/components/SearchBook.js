@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { search } from './../utils/BooksAPI'
+// import { debounce } from 'lodash'
 
 export default class SearchBooks extends Component {
   state = {
@@ -8,13 +9,16 @@ export default class SearchBooks extends Component {
 
   componentWillReceiveProps = async newProps => {
     if (newProps.queryConsulting !== '') {
-      await search(newProps.queryConsulting)
+      // Introducing delay for search
+      setTimeout(async () => {
+        await search(newProps.queryConsulting)
         .then(res => {
           if (!res.error) {
             this.setState({ listBooks: res })
           }
         })
         .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+      }, 700)
     } else {
       this.setState(() => ({ listBooks: [] }))
     }
