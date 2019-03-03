@@ -1,24 +1,33 @@
 import React, { Component } from 'react'
-import { getAll } from './../utils/BooksAPI'
+import { search } from './../utils/BooksAPI'
+// import { debounce } from 'lodash'
 
 export default class SearchBooks extends Component {
-
   state = {
-    query: '',
     listBooks: []
   }
 
-  componentDidMount = async () => await getAll().then(list => this.setState(() => ({ listBooks: list })))
-
+  componentWillReceiveProps = async newProps => {
+    if (newProps.queryConsulting !== '') {
+      // Introducing delay for search
+      setTimeout(async () => {
+        await search(newProps.queryConsulting)
+        .then(res => {
+          if (!res.error) {
+            this.setState({ listBooks: res })
+          }
+        })
+        .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+      }, 700)
+    } else {
+      this.setState(() => ({ listBooks: [] }))
+    }
+  }
   render() {
-    const { listBooks } = this.state
-    const filteredTitle = listBooks.filter(book =>
-      book.title.toLowerCase().includes(this.props.queryConsulting.toLowerCase()))
     return (
       <div className="search-books-results">
-        {this.props.onTeste}
         <ol className="books-grid">
-          {filteredTitle.map(book => (
+          {this.state.listBooks.map(book => (
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
