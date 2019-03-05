@@ -5,11 +5,6 @@ import ListBooksReading from './ListBooksReading'
 import { getAll } from './../utils/BooksAPI'
 
 export class Home extends React.Component {
-
-  constructor() {
-    super()
-  }
-
   state = {
     listCurrentlyRead: [],
     listWantRead: [],

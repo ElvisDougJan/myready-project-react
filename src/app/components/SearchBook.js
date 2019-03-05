@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
 import { search } from './../utils/BooksAPI'
+// import debounce from 'lodash.debounce'
 
 export default class SearchBooks extends Component {
   state = {
     listBooks: []
   }
 
-  componentWillReceiveProps = async newProps => {
+  componentWillReceiveProps = newProps => {
     if (newProps.queryConsulting !== '') {
-      // Introducing delay for search
-      setTimeout(async () => {
-        await search(newProps.queryConsulting)
-        .then(res => {
-          if (!res.error) {
-            this.setState({ listBooks: res })
-          }
-        })
-        .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
-      }, 700)
+      setTimeout(() => {
+        this.searchBooks(newProps)
+      }, 300)
     } else {
       this.setState(() => ({ listBooks: [] }))
     }
   }
+
+  searchBooks = async newProps => {
+    await search(newProps.queryConsulting)
+      .then(res => {
+        if (!res.error) {
+          this.setState({ listBooks: res })
+        }
+      })
+      .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
+  }
+
   render() {
     return (
       <div className="search-books-results">
