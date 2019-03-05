@@ -48,11 +48,14 @@ export default class SearchBooks extends Component {
                 </div>
                 <div className="book-title">{book.title}</div>
                 <div className="book-authors">
-                  {book.authors.map((author, index) => (
-                    <p key={index}>
-                      {author}
-                    </p>
-                  ))}
+                  {book.authors !== undefined
+                    ?
+                    book.authors.map((author, index) => (
+                      <p key={index}>
+                        {author}
+                      </p>
+                    ))
+                    : <p><i>AUTHOR NOT INFORMED</i></p>}
                 </div>
               </div>
             </li>
