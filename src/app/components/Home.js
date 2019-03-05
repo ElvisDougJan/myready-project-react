@@ -16,12 +16,16 @@ export class Home extends React.Component {
 
   updateState = async () => {
     await getAll().then(list => {
+      localStorage.setItem('allBooks', JSON.stringify(list))
       this.setState(() => ({
         listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
         listWantRead: list.filter(book => book.shelf === 'wantToRead'),
         listRead: list.filter(book => book.shelf === 'read')
       }))
     })
+    // localStorage.setItem('currentlyRead', JSON.stringify(this.state.listCurrentlyRead))
+    // localStorage.setItem('wantToRead', JSON.stringify(this.state.listWantRead))
+    // localStorage.setItem('read', JSON.stringify(this.state.listRead))
   }
 
   render() {
@@ -38,11 +42,11 @@ export class Home extends React.Component {
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
-              <WantReadBooks booksList={this.state.listWantRead} updateState={this.updateState}/>
+              <WantReadBooks booksList={this.state.listWantRead} updateState={this.updateState} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
-              <ReadBooks booksList={this.state.listRead} updateState={this.updateState}/>
+              <ReadBooks booksList={this.state.listRead} updateState={this.updateState} />
             </div>
           </div>
         </div>
