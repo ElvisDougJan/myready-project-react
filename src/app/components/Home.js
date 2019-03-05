@@ -8,7 +8,6 @@ export class Home extends React.Component {
 
   constructor() {
     super()
-    this.updateState = this.updateState.bind(this)
   }
 
   state = {
