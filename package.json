@@ -23,8 +23,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.1"
-  }
+  "devDependencies": {}
 }
