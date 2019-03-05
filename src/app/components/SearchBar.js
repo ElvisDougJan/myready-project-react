@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import SearchBooks from './SearchBook'
 import { Route, Link } from 'react-router-dom'
-
 export default class SearchBar extends Component {
 
   state = {
