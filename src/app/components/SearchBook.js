@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { search, get } from './../utils/BooksAPI'
 import { updateBook } from './../utils/updateBooks'
-// import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce'
 
 export default class SearchBooks extends Component {
   state = {
@@ -9,15 +9,13 @@ export default class SearchBooks extends Component {
     selectedBook: {}
   }
 
-  componentWillReceiveProps = newProps => {
-    if (newProps.queryConsulting !== '') {
-      setTimeout(() => {
-        this.searchBooks(newProps)
-      }, 700)
-    } else {
-      this.setState(() => ({ listBooks: [] }))
-    }
-  }
+  componentWillReceiveProps = debounce(
+    newProps =>
+      newProps.queryConsulting !== ''
+        ? this.searchBooks(newProps)
+        : this.setState(() => ({ listBooks: [] }))
+    , 500)
+
 
   searchBooks = async newProps => {
     await search(newProps.queryConsulting.toLowerCase())
