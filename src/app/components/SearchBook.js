@@ -4,7 +4,7 @@ import { search } from './../utils/BooksAPI'
 
 export default class SearchBooks extends Component {
   state = {
-    listBooks: []
+    listBooks: [],
   }
 
   componentWillReceiveProps = newProps => {
@@ -35,7 +35,7 @@ export default class SearchBooks extends Component {
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
+                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.smallThumbnail : null})` }}></div>
                   <div className="book-shelf-changer">
                     <select>
                       <option value="move" disabled>Move to...</option>
