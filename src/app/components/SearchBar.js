@@ -10,7 +10,7 @@ export default class SearchBar extends Component {
 
   updateQuery = query => {
     this.setState(() => ({
-      query: query.trim()
+      query: query
     }))
   }
 
@@ -25,7 +25,7 @@ export default class SearchBar extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
+              // value={this.state.query}
               onChange={event => this.updateQuery(event.target.value)}
             />
           </div>

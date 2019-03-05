@@ -13,7 +13,7 @@ export default class SearchBooks extends Component {
     if (newProps.queryConsulting !== '') {
       setTimeout(() => {
         this.searchBooks(newProps)
-      }, 300)
+      }, 500)
     } else {
       this.setState(() => ({ listBooks: [] }))
     }
