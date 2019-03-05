@@ -12,7 +12,6 @@ export default class SearchBar extends Component {
     this.setState(() => ({
       query: query.trim()
     }))
-    console.log(this.state.query)
   }
 
   render() {
