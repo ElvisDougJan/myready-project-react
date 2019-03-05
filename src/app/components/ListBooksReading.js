@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { update } from '../utils/BooksAPI'
+import { updateBook } from './../utils/updateBooks'
 import './../style/App.css'
 
 export default class ListBooksReading extends Component {
@@ -9,11 +9,6 @@ export default class ListBooksReading extends Component {
   }
 
   componentWillReceiveProps = async newProps => await this.setState({ booksReading: newProps.booksList })
-
-  updateBook = (event, book) => {
-    update(book, { shelf: event.target.value })
-      .then(res => console.log(res))
-  }
 
   render() {
     return (
@@ -25,7 +20,7 @@ export default class ListBooksReading extends Component {
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                   <div className="book-shelf-changer">
-                    <select onClick={event => this.updateBook(event, book)}>
+                    <select onClick={async event => await updateBook(event, book) && await this.props.updateState()}>
                       <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>

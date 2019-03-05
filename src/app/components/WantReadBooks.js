@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { updateBook } from './../utils/updateBooks'
 
 export default class WantToRead extends Component {
 
@@ -18,7 +19,7 @@ export default class WantToRead extends Component {
                 <div className="book-top">
                   <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                   <div className="book-shelf-changer">
-                    <select>
+                    <select onClick={async event => await updateBook(event, book) && await this.props.updateState()}>
                       <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>

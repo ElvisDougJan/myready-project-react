@@ -6,17 +6,21 @@ import { getAll } from './../utils/BooksAPI'
 
 export class Home extends React.Component {
 
-  // constructor() {
-  //   super()
-  // }
+  constructor() {
+    super()
+    this.updateState = this.updateState.bind(this)
+  }
 
   state = {
     listCurrentlyRead: [],
     listWantRead: [],
-    listRead: []
+    listRead: [],
+    reloadingPage: false
   }
 
-  async componentDidMount() {
+  componentDidMount = async () => await this.updateState()
+
+  updateState = async () => {
     await getAll().then(list => {
       this.setState(() => ({
         listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
@@ -36,15 +40,15 @@ export class Home extends React.Component {
           <div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
-              <ListBooksReading booksList={this.state.listCurrentlyRead} />
+              <ListBooksReading booksList={this.state.listCurrentlyRead} updateState={this.updateState} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
-              <WantReadBooks booksList={this.state.listWantRead} />
+              <WantReadBooks booksList={this.state.listWantRead} updateState={this.updateState}/>
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
-              <ReadBooks booksList={this.state.listRead} />
+              <ReadBooks booksList={this.state.listRead} updateState={this.updateState}/>
             </div>
           </div>
         </div>
