@@ -8,24 +8,21 @@ export class Home extends React.Component {
   state = {
     listCurrentlyRead: [],
     listWantRead: [],
-    listRead: [],
-    reloadingPage: false
+    listRead: []
   }
 
   componentDidMount = async () => await this.updateState()
 
   updateState = async () => {
+    const filter = books => shelf => books.filter(books => books.shelf === shelf)
     await getAll().then(list => {
-      localStorage.setItem('allBooks', JSON.stringify(list))
+      const filterBy = filter(list)
       this.setState(() => ({
-        listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
-        listWantRead: list.filter(book => book.shelf === 'wantToRead'),
-        listRead: list.filter(book => book.shelf === 'read')
+        listCurrentlyRead: filterBy('currentlyReading'),
+        listWantRead: filterBy('wantToRead'),
+        listRead: filterBy('read')
       }))
     })
-    // localStorage.setItem('currentlyRead', JSON.stringify(this.state.listCurrentlyRead))
-    // localStorage.setItem('wantToRead', JSON.stringify(this.state.listWantRead))
-    // localStorage.setItem('read', JSON.stringify(this.state.listRead))
   }
 
   render() {

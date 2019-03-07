@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { updateBook } from './../utils/updateBooks'
 import './../style/App.css'
 import './../style/my-css.css'
 
-export default class ListBooksReading extends Component {
+export default class ListBooksReading extends PureComponent {
 
   state = {
     booksReading: []
