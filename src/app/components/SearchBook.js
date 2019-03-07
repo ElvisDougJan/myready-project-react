@@ -17,8 +17,6 @@ export default class SearchBooks extends Component {
         : this.setState(() => ({ listBooks: [] }))
     }, 500)
 
-
-
   searchBooks = async newProps => {
     await search(newProps.queryConsulting.toLowerCase())
       .then(res => {
@@ -32,7 +30,8 @@ export default class SearchBooks extends Component {
   verifyBookState = async id => {
     await get(id)
       .then(res => {
-        this.setState(() => ({ selectedBook: res }))
+        this.setState({ selectedBook: res })
+        console.log(this.state.selectedBook.shelf)
       })
       .catch(err => console.log(err))
   }
@@ -49,12 +48,12 @@ export default class SearchBooks extends Component {
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.smallThumbnail : null})` }}></div>
                     <div className="book-shelf-changer">
-                      <select onMouseDown={async () => await this.verifyBookState(book.id)} onClick={async event => await updateBook(event, book)} >
+                      <select value={this.state.selectedBook.shelf} onFocus={async () => await this.verifyBookState(book.id)} onClick={async event => await updateBook(event, book)} >
                         <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">{this.state.selectedBook.shelf === 'currentlyReading' ? '* Currently Reading' : 'Currently Reading'}</option>
-                        <option value="wantToRead">{this.state.selectedBook.shelf === 'wantToRead' ? '* Want to Read' : 'Want to Read'}</option>
-                        <option value="read">{this.state.selectedBook.shelf === 'read' ? '* Read' : 'Read'}</option>
-                        <option value="none">{this.state.selectedBook.shelf === 'none' ? '* None' : 'None'}</option>
+                        <option value="currentlyReading">Currently Reading</option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                        <option value="none">None</option>
                       </select>
                     </div>
                   </div>
