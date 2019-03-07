@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import SearchBooks from './SearchBook'
 import { Route, Link } from 'react-router-dom'
-
 export default class SearchBar extends Component {
 
   state = {
@@ -10,9 +9,8 @@ export default class SearchBar extends Component {
 
   updateQuery = query => {
     this.setState(() => ({
-      query: query.trim()
+      query: query
     }))
-    console.log(this.state.query)
   }
 
   render() {
@@ -26,7 +24,6 @@ export default class SearchBar extends Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              value={this.state.query}
               onChange={event => this.updateQuery(event.target.value)}
             />
           </div>

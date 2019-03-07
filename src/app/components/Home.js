@@ -5,23 +5,22 @@ import ListBooksReading from './ListBooksReading'
 import { getAll } from './../utils/BooksAPI'
 
 export class Home extends React.Component {
-
-  // constructor() {
-  //   super()
-  // }
-
   state = {
     listCurrentlyRead: [],
     listWantRead: [],
     listRead: []
   }
 
-  async componentDidMount() {
+  componentDidMount = async () => await this.updateState()
+
+  updateState = async () => {
+    const filter = books => shelf => books.filter(books => books.shelf === shelf)
     await getAll().then(list => {
+      const filterBy = filter(list)
       this.setState(() => ({
-        listCurrentlyRead: list.filter(book => book.shelf === 'currentlyReading'),
-        listWantRead: list.filter(book => book.shelf === 'wantToRead'),
-        listRead: list.filter(book => book.shelf === 'read')
+        listCurrentlyRead: filterBy('currentlyReading'),
+        listWantRead: filterBy('wantToRead'),
+        listRead: filterBy('read')
       }))
     })
   }
@@ -36,15 +35,15 @@ export class Home extends React.Component {
           <div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
-              <ListBooksReading booksList={this.state.listCurrentlyRead} />
+              <ListBooksReading booksList={this.state.listCurrentlyRead} updateState={this.updateState} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
-              <WantReadBooks booksList={this.state.listWantRead} />
+              <WantReadBooks booksList={this.state.listWantRead} updateState={this.updateState} />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
-              <ReadBooks booksList={this.state.listRead} />
+              <ReadBooks booksList={this.state.listRead} updateState={this.updateState} />
             </div>
           </div>
         </div>

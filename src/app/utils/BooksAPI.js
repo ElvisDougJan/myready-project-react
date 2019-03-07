@@ -1,6 +1,5 @@
 const api = "https://reactnd-books-api.udacity.com"
 
-
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token
 if (!token)
@@ -29,7 +28,9 @@ export const update = (book, shelf) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ shelf })
-  }).then(res => res.json())
+  }).then(res => {
+    res.json()
+  })
 
 export const search = query =>
   fetch(`${api}/search`, {
@@ -39,5 +40,5 @@ export const search = query =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ query })
-  }).then(res => res.json())
+  }).then(res => res.clone().json())
     .then(data => data.books)

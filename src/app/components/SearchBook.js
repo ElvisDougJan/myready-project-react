@@ -1,55 +1,83 @@
 import React, { Component } from 'react'
-import { search } from './../utils/BooksAPI'
+import { search, get } from './../utils/BooksAPI'
+import { updateBook } from './../utils/updateBooks'
+import debounce from 'lodash.debounce'
+import './../style/my-css.css'
 
 export default class SearchBooks extends Component {
   state = {
-    listBooks: []
+    listBooks: [],
+    selectedBook: {}
   }
 
-  componentWillReceiveProps = async newProps => {
-    if (newProps.queryConsulting !== '') {
-      await search(newProps.queryConsulting)
-        .then(res => {
-          if (!res.error) {
-            this.setState({ listBooks: res })
-          }
-        })
-        .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
-    } else {
-      this.setState(() => ({ listBooks: [] }))
-    }
+  componentWillReceiveProps = debounce(
+    newProps => {
+      newProps.queryConsulting !== ''
+        ? this.searchBooks(newProps)
+        : this.setState(() => ({ listBooks: [] }))
+    }, 500)
+
+
+
+  searchBooks = async newProps => {
+    await search(newProps.queryConsulting.toLowerCase())
+      .then(res => {
+        if (!res.error) {
+          this.setState({ listBooks: res })
+        }
+      })
+      .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
   }
+
+  verifyBookState = async id => {
+    await get(id)
+      .then(res => {
+        this.setState(() => ({ selectedBook: res }))
+      })
+      .catch(err => console.log(err))
+  }
+
   render() {
     return (
       <div className="search-books-results">
-        <ol className="books-grid">
-          {this.state.listBooks.map(book => (
-            <li key={book.id}>
-              <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
-                  <div className="book-shelf-changer">
-                    <select>
-                      <option value="move" disabled>Move to...</option>
-                      <option value="currentlyReading">Currently Reading</option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="read">Read</option>
-                      <option value="none">None</option>
-                    </select>
+        {this.state.listBooks.length > 0
+          ?
+          <ol className="books-grid withContent">
+            {this.state.listBooks.map(book => (
+              <li key={book.id}>
+                <div className="book">
+                  <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.smallThumbnail : null})` }}></div>
+                    <div className="book-shelf-changer">
+                      <select onMouseDown={async () => await this.verifyBookState(book.id)} onClick={async event => await updateBook(event, book)} >
+                        <option value="move" disabled>Move to...</option>
+                        <option value="currentlyReading">{this.state.selectedBook.shelf === 'currentlyReading' ? '* Currently Reading' : 'Currently Reading'}</option>
+                        <option value="wantToRead">{this.state.selectedBook.shelf === 'wantToRead' ? '* Want to Read' : 'Want to Read'}</option>
+                        <option value="read">{this.state.selectedBook.shelf === 'read' ? '* Read' : 'Read'}</option>
+                        <option value="none">{this.state.selectedBook.shelf === 'none' ? '* None' : 'None'}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="book-title">{book.title}</div>
+                  <div className="book-authors">
+                    {book.authors !== undefined
+                      ?
+                      book.authors.map((author, index) => (
+                        <p key={index}>
+                          {author}
+                        </p>
+                      ))
+                      : <p><i>AUTHOR NOT INFORMED</i></p>}
                   </div>
                 </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">
-                  {book.authors.map((author, index) => (
-                    <p key={index}>
-                      {author}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
+              </li>
+            ))}
+          </ol>
+          :
+          <div className="withoutContent">
+            <p>Please, search for a book.</p>
+          </div>
+        }
       </div>
     )
   }
