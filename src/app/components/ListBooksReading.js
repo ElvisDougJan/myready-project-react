@@ -9,7 +9,9 @@ export default class ListBooksReading extends PureComponent {
     booksReading: []
   }
 
-  componentWillReceiveProps = async newProps => await this.setState({ booksReading: newProps.booksList })
+  componentDidMount = () => this.setState(() => ({ booksReading: this.props.booksList }))
+
+  componentWillReceiveProps = newProps => this.setState(() => ({ booksReading: newProps.booksList }))
 
   render() {
     return (
