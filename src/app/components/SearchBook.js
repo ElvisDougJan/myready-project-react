@@ -7,35 +7,34 @@ import './../style/my-css.css'
 export default class SearchBooks extends Component {
   state = {
     listBooks: [],
-    selectedBook: {}
+    selectedBookShelf: 'none'
   }
 
   componentWillReceiveProps = debounce(
-    newProps => {
+    async newProps =>
       newProps.queryConsulting !== ''
-        ? this.searchBooks(newProps)
+        ? await this.searchBooks(newProps)
         : this.setState(() => ({ listBooks: [] }))
-    }, 500)
-
-
+    , 500)
 
   searchBooks = async newProps => {
     await search(newProps.queryConsulting.toLowerCase())
-      .then(res => {
+      .then(async res => {
         if (!res.error) {
-          this.setState({ listBooks: res })
+          await this.setState({ listBooks: res })
         }
       })
       .catch(err => console.warn(`Erro ao realizar consulta na API. ${err}`))
   }
 
-  verifyBookState = async id => {
+  verifyBookState = async id =>
     await get(id)
-      .then(res => {
-        this.setState(() => ({ selectedBook: res }))
-      })
-      .catch(err => console.log(err))
-  }
+      .then(res => this.setState(() => ({
+        selectedBookShelf: res.shelf
+      })))
+      .catch(err => console.warn(err))
+
+  clearSelectedShelf = () => this.setState(() => ({ selectedBookShelf: 'none' }))
 
   render() {
     return (
@@ -49,12 +48,17 @@ export default class SearchBooks extends Component {
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.smallThumbnail : null})` }}></div>
                     <div className="book-shelf-changer">
-                      <select onMouseDown={async () => await this.verifyBookState(book.id)} onClick={async event => await updateBook(event, book)} >
+                      <select
+                        value={this.state.selectedBookShelf}
+                        onFocus={async () => await this.verifyBookState(book.id)}
+                        onChange={async event => await updateBook(event, book)}
+                        onBlur={() => this.clearSelectedShelf()}
+                      >
                         <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">{this.state.selectedBook.shelf === 'currentlyReading' ? '* Currently Reading' : 'Currently Reading'}</option>
-                        <option value="wantToRead">{this.state.selectedBook.shelf === 'wantToRead' ? '* Want to Read' : 'Want to Read'}</option>
-                        <option value="read">{this.state.selectedBook.shelf === 'read' ? '* Read' : 'Read'}</option>
-                        <option value="none">{this.state.selectedBook.shelf === 'none' ? '* None' : 'None'}</option>
+                        <option value="currentlyReading">Currently Reading</option>
+                        <option value="wantToRead">Want to Read</option>
+                        <option value="read">Read</option>
+                        <option value="none">None</option>
                       </select>
                     </div>
                   </div>

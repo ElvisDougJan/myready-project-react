@@ -220,15 +220,20 @@ button:active {
   height: 100%;
   opacity: 0;
   cursor: pointer;
-  background-color: #DDD;
-  color: #333;
+  background-color: #4b5397;
+  color: #FFF;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
-/* 
-.book-shelf-changer select-selected {
-  background-color: #000
-} */
 
+.book-shelf-changer option:checked {
+  background-color: #FFF;
+  color: #333;
+}
+
+.book-shelf-changer option:disabled {
+  background-color: #DDD;
+  color: #4b5397;
+}
 /* book cover */
 
 .book-cover {
