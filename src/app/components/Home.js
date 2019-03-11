@@ -1,7 +1,5 @@
 import React from 'react'
-import WantReadBooks from './WantReadBooks'
-import ReadBooks from './ReadBooks'
-import ListBooksReading from './ListBooksReading'
+import BookCase from './BookCase'
 import { getAll } from './../utils/BooksAPI'
 import Loader from './../components/Loader'
 
@@ -19,6 +17,7 @@ export class Home extends React.Component {
     this.setState(() => ({ loader: true }))
 
     const filter = books => shelf => books.filter(books => books.shelf === shelf)
+
     await getAll().then(async list => {
       const filterBy = await filter(list)
       await this.setState(() => ({
@@ -44,15 +43,15 @@ export class Home extends React.Component {
             <div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Currently Reading</h2>
-                <ListBooksReading booksList={this.state.listCurrentlyRead} updateState={this.updateState} />
+                <BookCase booksList={this.state.listCurrentlyRead} updateState={this.updateState} />
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Want to Read</h2>
-                <WantReadBooks booksList={this.state.listWantRead} updateState={this.updateState} />
+                <BookCase booksList={this.state.listWantRead} updateState={this.updateState} />
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Read</h2>
-                <ReadBooks booksList={this.state.listRead} updateState={this.updateState} />
+                <BookCase booksList={this.state.listRead} updateState={this.updateState} />
               </div>
             </div>
           </div>
