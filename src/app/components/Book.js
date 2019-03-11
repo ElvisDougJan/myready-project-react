@@ -39,7 +39,11 @@ export default class Book extends PureComponent {
                       <select
                         value={this.state.selectedBookShelf}
                         onFocus={async () => await this.verifyBookState(book.id)}
-                        onChange={async event => await updateBook(event, book) && await this.props.updateState()}
+                        onChange={
+                          async event => await updateBook(event, book) &&
+                            this.props.updateState
+                            ? await this.props.updateState()
+                            : null}
                         onBlur={() => this.clearSelectedShelf()}
                       >
                         <option value="move" disabled>Move to...</option>

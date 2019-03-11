@@ -16,7 +16,6 @@ export class Home extends React.Component {
 
   updateState = async () => {
     this.setState(() => ({ loader: true }))
-
     const filter = books => shelf => books.filter(books => books.shelf === shelf)
 
     await getAll().then(async list => {
@@ -44,15 +43,24 @@ export class Home extends React.Component {
             <div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Currently Reading</h2>
-                <Book listBooks={this.state.listCurrentlyRead} updateState={this.updateState} />
+                <Book
+                  listBooks={this.state.listCurrentlyRead}
+                  updateState={this.updateState}
+                />
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Want to Read</h2>
-                <Book listBooks={this.state.listWantRead} updateState={this.updateState} />
+                <Book
+                  listBooks={this.state.listWantRead}
+                  updateState={this.updateState}
+                />
               </div>
               <div className="bookshelf">
                 <h2 className="bookshelf-title">Read</h2>
-                <Book listBooks={this.state.listRead} updateState={this.updateState} />
+                <Book
+                  listBooks={this.state.listRead}
+                  updateState={this.updateState}
+                />
               </div>
             </div>
           </div>
