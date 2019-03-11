@@ -25,7 +25,10 @@ export default class Bookcase extends PureComponent {
                   <div className="book-top">
                     <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                     <div className="book-shelf-changer">
-                      <select defaultValue={book.shelf} onClick={async event => await updateBook(event, book) && await this.props.updateState()}>
+                      <select
+                        value={book.shelf}
+                        onChange={async event => await updateBook(event, book) && await this.props.updateState()}
+                      >
                         <option value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
